@@ -32,9 +32,9 @@ FLIP_ARG1=""
 FLIP_ARG2=""
 if [ "$HOSTNAME" = "art" ]; then
     FLIP_ARG1="--flip v,h"
-    FLIP_ARG2="--flip v"
+    FLIP_ARG2="--flip v,h"
 elif [ "$HOSTNAME" = "library" ]; then
-    FLIP_ARG1="--flip v"
+    FLIP_ARG1="--flip v,h"
     FLIP_ARG2=""
 fi
 
