@@ -107,6 +107,8 @@ for cam in "${cameras[@]}"; do
       -splice 0x28 \
       -annotate +10+5 " $DATETIMESTAMP " \
       "$img"
+
+    rm $TEMP_IMAGE
 done
 
 
