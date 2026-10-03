@@ -54,7 +54,6 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	git config --global user.name "adrian@${HOSTNAME}"
 	git config --global user.email "778@onezerohosting.com"
 
-
 	if [ "$REPO_SETUP" == true ]; then
 		mkdir $REPO_DIR
 		cd "$REPO_DIR"
@@ -63,7 +62,7 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	else
 		# 2. Enable sparse checkout and target ONLY the snapshot file
 		git clone --depth 1 --branch main https://github.com/june07/778.git $REPO_DIR
-		git sparse-checkout init --no-cone
+		git sparse-checkout init
 	fi
 
 	if [ "$HOSTNAME" == "art" ]; then
