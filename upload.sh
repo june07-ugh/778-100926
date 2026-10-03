@@ -47,13 +47,12 @@ elif [ "$HOSTNAME" = "library" ]; then
 fi
 
 
+git config --global init.defaultBranch $BRANCH
+git config --global user.name "adrian@${HOSTNAME}"
+git config --global user.email "778@onezerohosting.com"
+
 # 2. Clone the repo if it doesn't exist locally yet (run this setup once beforehand)
 if [ ! -d "$REPO_DIR/.git" ]; then
-
-	git config --global init.defaultBranch $BRANCH
-	git config --global user.name "adrian@${HOSTNAME}"
-	git config --global user.email "778@onezerohosting.com"
-
 	if [ "$REPO_SETUP" == true ]; then
 		mkdir $REPO_DIR
 		cd "$REPO_DIR"
@@ -65,22 +64,26 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 		git sparse-checkout init
 	fi
 
+	git sparse-checkout set --no-cone true
+
 	if [ "$HOSTNAME" == "art" ]; then
-		git sparse-checkout set snapshot-1.jpg snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
+		git sparse-checkout set /upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
 	elif [ "$HOSTNAME" == "library" ]; then
-		git sparse-checkout set snapshot-3.jpg snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
+		git sparse-checkout set /upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
 	elif [ "$HOSTNAME" == "aaliyah" ]; then
-		git sparse-checkout set snapshot-5.jpg snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
+		git sparse-checkout set /upload.sh /snapshot-5.jpg /snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
 	fi
 
 	git pull origin "$BRANCH"
 else
+	git sparse-checkout set --no-cone true
+
 	if [ "$HOSTNAME" == "art" ]; then
-                git sparse-checkout set snapshot-1.jpg snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
+                git sparse-checkout set /upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
         elif [ "$HOSTNAME" == "library" ]; then
-                git sparse-checkout set snapshot-3.jpg snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
+                git sparse-checkout set /upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
         elif [ "$HOSTNAME" == "aaliyah" ]; then
-                git sparse-checkout set snapshot-5.jpg snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
+                git sparse-checkout set /upload.sh /snapshot-5.jpg /snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
         fi
 fi
 
