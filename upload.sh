@@ -52,18 +52,14 @@ fi
 
 # 2. Clone the repo if it doesn't exist locally yet (run this setup once beforehand)
 if [ ! -d "$REPO_DIR/.git" ]; then
-	cd $REPO_DIR
-
+	git config --global init.defaultBranch $BRANCH
 	git config --global user.name "adrian@${HOSTNAME}"
 	git config --global user.email "778@onezerohosting.com"
 
 	if [ "$REPO_SETUP" == true ]; then
-		git config --global init.defaultBranch $BRANCH
+		cd "$REPO_DIR"
 		git init
 	else
-pwd
-ls -la ~/.git
-cat ~/.git/config
 		git remote add origin git@github.com:june07/778.git
 		# 2. Enable sparse checkout and target ONLY the snapshot file
 		git clone --depth 1 --branch main https://github.com/june07/778.git $REPO_DIR
