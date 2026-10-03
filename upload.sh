@@ -46,7 +46,7 @@ elif [ "$HOSTNAME" = "library" ]; then
     FLIP_ARG2=""
 fi
 
-if [ ! -d "$REPO_DIR" && -z "$REPO_SETUP" ]; then
+if [ ! -d "$REPO_DIR" ]; then
 	mkdir $REPO_DIR
 fi
 
