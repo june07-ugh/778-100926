@@ -9,6 +9,14 @@ for arg in "$@"; do
     fi
 done
 
+REPO_SETUP=false
+for arg in "$@"; do
+    if [ "$arg" = "--repo-setup" ] || [ "$arg" = "-s" ]; then
+        REPO_SETUP=true
+        break
+    fi
+done
+
 # Apply sleep delay unless skipped
 if [ "$SKIP_SLEEP" = false ]; then
     sleep $((RANDOM % 30))
@@ -38,7 +46,7 @@ elif [ "$HOSTNAME" = "library" ]; then
     FLIP_ARG2=""
 fi
 
-if [ ! -d "$REPO_DIR" ]; then
+if [ ! -d "$REPO_DIR" && -z "$REPO_SETUP" ]; then
 	mkdir $REPO_DIR
 fi
 
@@ -50,8 +58,11 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	git config --global user.name "adrian@${HOSTNAME}"
 	git config --global user.email "778@onezerohosting.com"
 
-	#git init
-	git remote add origin git@github.com:june07/778.git
+	if [ -z "$REPO_SETUP" ]; then
+		git init
+	else
+		git remote add origin git@github.com:june07/778.git
+	fi
 
 	# 2. Enable sparse checkout and target ONLY the snapshot file
 	git clone --depth 1 --branch main https://github.com/june07/778.git $REPO_DIR
