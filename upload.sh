@@ -76,6 +76,8 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 
 	git pull origin "$BRANCH"
 else
+	cd $REPO_DIR
+
 	git sparse-checkout set --no-cone true
 
 	if [ "$HOSTNAME" == "art" ]; then
