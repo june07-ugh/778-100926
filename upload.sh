@@ -54,17 +54,17 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	git config --global user.name "adrian@${HOSTNAME}"
 	git config --global user.email "778@onezerohosting.com"
 
-	if [ ! -d "$REPO_DIR" ]; then
+	if [ "$REPO_SETUP" == true ]; then
 		mkdir $REPO_DIR
 		cd "$REPO_DIR"
 
 		git init
-	fi
 
-		git remote add origin git@github.com:june07/778.git
+	else
 		# 2. Enable sparse checkout and target ONLY the snapshot file
 		git clone --depth 1 --branch main https://github.com/june07/778.git $REPO_DIR
 		git sparse-checkout init --cone
+	fi
 
 	if [ "$HOSTNAME" == "art" ]; then
 		git sparse-checkout set snapshot-1.jpg snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
