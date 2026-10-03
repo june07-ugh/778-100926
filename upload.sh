@@ -54,6 +54,7 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	git remote add origin git@github.com:june07/778.git
 
 	# 2. Enable sparse checkout and target ONLY the snapshot file
+	git clone --depth 1 --branch main https://github.com/june07/778.git $REPO_DIR
 	git sparse-checkout init --cone
 	if [ "$HOSTNAME" == "art" ]; then
 		git sparse-checkout set snapshot-1.jpg snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
