@@ -63,7 +63,7 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	else
 		# 2. Enable sparse checkout and target ONLY the snapshot file
 		git clone --depth 1 --branch main https://github.com/june07/778.git $REPO_DIR
-		git sparse-checkout init
+		git sparse-checkout init --no-cone
 	fi
 
 	if [ "$HOSTNAME" == "art" ]; then
