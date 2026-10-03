@@ -54,10 +54,10 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	git config --global user.name "adrian@${HOSTNAME}"
 	git config --global user.email "778@onezerohosting.com"
 
+
 	if [ "$REPO_SETUP" == true ]; then
 		mkdir $REPO_DIR
 		cd "$REPO_DIR"
-
 		git init
 
 	else
