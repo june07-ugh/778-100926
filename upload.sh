@@ -44,6 +44,9 @@ if [ "$HOSTNAME" = "art" ]; then
 elif [ "$HOSTNAME" = "library" ]; then
     FLIP_ARG1="--flip v,h"
     FLIP_ARG2=""
+elif [ "$HOSTNAME" = "aaliyah" ]; then
+    FLIP_ARG1=""
+    FLIP_ARG2="--flip v,h"
 fi
 
 
