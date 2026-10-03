@@ -142,6 +142,7 @@ elif [ "$HOSTNAME" == "aaliyah" ]; then
 fi
 
 git add .
+git status
 git commit -m "Auto-update snapshot: $(date -u)"
 git push origin "$BRANCH"
 
