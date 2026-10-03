@@ -50,7 +50,7 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	git config --global user.name "adrian@${HOSTNAME}"
 	git config --global user.email "778@onezerohosting.com"
 
-	git init
+	#git init
 	git remote add origin git@github.com:june07/778.git
 
 	# 2. Enable sparse checkout and target ONLY the snapshot file
