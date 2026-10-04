@@ -22,6 +22,7 @@ if [ "$SKIP_SLEEP" = false ]; then
     sleep $((RANDOM % 30))
 fi
 
+SCRIPT_PATH="$(readlink -f "$0")"
 HOSTNAME=`hostname`
 # Define paths and repo details
 YEAR=`date +%Y`
@@ -135,7 +136,7 @@ cd "$REPO_DIR" || exit 1
 git fetch origin "$BRANCH"
 git reset --hard "origin/$BRANCH"
 
-cp /mnt/upload.sh "${REPO_DIR}"
+cp "$SCRIPT_PATH" "${REPO_DIR}"
 
 if [ "$HOSTNAME" == "art" ]; then
 	cp $IMAGE1 "${REPO_DIR}/snapshot-1.jpg"
