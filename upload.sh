@@ -37,6 +37,7 @@ DATETIMESTAMP=$(TZ="America/Chicago" date +"%Y-%m-%d %H:%M:%S")
 IMAGE1="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-1.jpg"
 IMAGE2="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-2.jpg"
 IMAGE3="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-3.jpg"
+IMAGE4="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-4.jpg"
 
 FLIP_ARG1=""
 FLIP_ARG2=""
@@ -187,6 +188,7 @@ elif [ "$HOSTNAME" == "aaliyah" ]; then
 	cp $IMAGE1 "${REPO_DIR}/snapshot-5.jpg"
 	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
     cp ~/ha-storage/storefront-corner.jpg $IMAGE3 && cp ~/ha-storage/storefront-corner.jpg "${REPO_DIR}/snapshot-7.jpg"
+    cp ~/ha-storage/storefront-edge.jpg $IMAGE4 && cp ~/ha-storage/storefront-edge.jpg "${REPO_DIR}/snapshot-8.jpg"
 fi
 
 git add .
