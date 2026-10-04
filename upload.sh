@@ -36,6 +36,7 @@ TIMESTAMP=`date +%s`
 DATETIMESTAMP=$(TZ="America/Chicago" date +"%Y-%m-%d %H:%M:%S")
 IMAGE1="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-1.jpg"
 IMAGE2="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-2.jpg"
+IMAGE3="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-3.jpg"
 
 FLIP_ARG1=""
 FLIP_ARG2=""
@@ -75,7 +76,7 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	elif [ "$HOSTNAME" == "library" ]; then
 		git sparse-checkout set /upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
 	elif [ "$HOSTNAME" == "aaliyah" ]; then
-		git sparse-checkout set /upload.sh /snapshot-5.jpg /snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
+		git sparse-checkout set /upload.sh /snapshot-5.jpg /snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/}
 	fi
 
 	git pull origin "$BRANCH"
@@ -89,7 +90,7 @@ else
         elif [ "$HOSTNAME" == "library" ]; then
                 git sparse-checkout set /upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
         elif [ "$HOSTNAME" == "aaliyah" ]; then
-                git sparse-checkout set /upload.sh /snapshot-5.jpg /snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
+                git sparse-checkout set /upload.sh /snapshot-5.jpg /snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/}
         fi
 fi
 
@@ -185,6 +186,7 @@ elif [ "$HOSTNAME" == "library" ]; then
 elif [ "$HOSTNAME" == "aaliyah" ]; then
 	cp $IMAGE1 "${REPO_DIR}/snapshot-5.jpg"
 	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
+    cp ~/ha-storage/storefront-corner.jpg $IMAGE3 && cp ~/ha-storage/storefront-corner.jpg "${REPO_DIR}/snapshot-7.jpg"
 fi
 
 git add .
