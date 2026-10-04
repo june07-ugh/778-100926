@@ -76,7 +76,7 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	elif [ "$HOSTNAME" == "library" ]; then
 		git sparse-checkout set /upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
 	elif [ "$HOSTNAME" == "aaliyah" ]; then
-		git sparse-checkout set /upload.sh /snapshot-5.jpg /snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/}
+		git sparse-checkout set /upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/}
 	fi
 
 	git pull origin "$BRANCH"
@@ -90,7 +90,7 @@ else
         elif [ "$HOSTNAME" == "library" ]; then
                 git sparse-checkout set /upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
         elif [ "$HOSTNAME" == "aaliyah" ]; then
-                git sparse-checkout set /upload.sh /snapshot-5.jpg /snapshot-6.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/}
+                git sparse-checkout set /upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/}
         fi
 fi
 
