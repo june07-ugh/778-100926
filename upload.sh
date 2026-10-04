@@ -38,6 +38,8 @@ IMAGE1="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-1.jpg"
 IMAGE2="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-2.jpg"
 IMAGE3="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-3.jpg"
 IMAGE4="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-4.jpg"
+IMAGE5="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-5.jpg"
+IMAGE6="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-6.jpg"
 
 FLIP_ARG1=""
 FLIP_ARG2=""
@@ -77,7 +79,7 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	elif [ "$HOSTNAME" == "library" ]; then
 		git sparse-checkout set /upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
 	elif [ "$HOSTNAME" == "aaliyah" ]; then
-		git sparse-checkout set /upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/}
+		git sparse-checkout set /upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/}
 	fi
 
 	git pull origin "$BRANCH"
@@ -91,7 +93,7 @@ else
         elif [ "$HOSTNAME" == "library" ]; then
                 git sparse-checkout set /upload.sh /snapshot-3.jpg /snapshot-4.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
         elif [ "$HOSTNAME" == "aaliyah" ]; then
-                git sparse-checkout set /upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/}
+                git sparse-checkout set /upload.sh /snapshot-*.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/} ${IMAGE3#${REPO_DIR}/} ${IMAGE4#${REPO_DIR}/} ${IMAGE5#${REPO_DIR}/} ${IMAGE6#${REPO_DIR}/}
         fi
 fi
 
@@ -189,6 +191,8 @@ elif [ "$HOSTNAME" == "aaliyah" ]; then
 	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
     cp ~/ha-storage/storefront-corner.jpg $IMAGE3 && cp ~/ha-storage/storefront-corner.jpg "${REPO_DIR}/snapshot-7.jpg"
     cp ~/ha-storage/storefront-edge.jpg $IMAGE4 && cp ~/ha-storage/storefront-edge.jpg "${REPO_DIR}/snapshot-8.jpg"
+    cp ~/ha-storage/storefront-front.jpg $IMAGE5 && cp ~/ha-storage/storefront-front.jpg "${REPO_DIR}/snapshot-9.jpg"
+    cp ~/ha-storage/storefront-tower.jpg $IMAGE6 && cp ~/ha-storage/storefront-tower.jpg "${REPO_DIR}/snapshot-10.jpg"
 fi
 
 git add .
