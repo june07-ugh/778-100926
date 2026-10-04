@@ -97,6 +97,44 @@ if [ ! -d $REPO_DIR_DAY ]; then
 	mkdir -p $REPO_DIR_DAY
 fi
 
+# Define location (Fluvanna, TX coordinates)
+LAT=32.8856
+LON=-101.1487
+
+# Use Python to determine the lighting mode based on system time and solar context,
+# or simply output optimized fswebcam arguments.
+# (Alternatively, you can compute sun position, or use a time-window approximation)
+
+# Let's determine exposure profile based on hour/twilight logic evaluated via Python:
+eval $(python3 - <<EOF
+import datetime
+# Simple time-window or sun calculation logic
+now = datetime.datetime.now()
+hour = now.hour + now.minute / 60.0
+
+# Define rough thresholds for Fluvanna twilight/day (adjust as seasons shift)
+# Winter/Summer twilight shifts can also be calculated via libraries if needed, 
+# but fixed seasonal windows or a quick solar calc work great.
+if 7.0 <= hour <= 18.5:
+    # Daytime: Fast shutter, low exposure, skip fewer frames
+    print("EXPOSURE=1")
+    print("EXP_TIME=10")
+    print("SKIP_FRAMES=10")
+elif (6.0 <= hour < 7.0) or (18.5 < hour <= 19.5):
+    # Sunrise / Sunset Twilight: Slower shutter, higher skip count for AWB settling
+    print("EXPOSURE=1")
+    print("EXP_TIME=100")
+    print("SKIP_FRAMES=40")
+else:
+    # Night: Max manual exposure or fallback
+    print("EXPOSURE=1")
+    print("EXP_TIME=200")
+    print("SKIP_FRAMES=20")
+EOF
+)
+
+echo "Selected profile -> Exposure Mode: $EXPOSURE, Time: $EXP_TIME, Skip Frames: $SKIP_FRAMES"
+
 # Define your camera pairs (Device, Flip argument, Image filename)
 cameras=(
     "/dev/video0|$FLIP_ARG1|$IMAGE1"
@@ -110,11 +148,11 @@ for cam in "${cameras[@]}"; do
     TEMP_IMAGE="/tmp/$IMAGE_NAME"
  
     # 1. Take snapshot
-#	     --set "focus_automatic_continuous=0" \
-    fswebcam --set "auto_exposure=1" \
-             --set "exposure_time_absolute=50" \
-             --set "focus_absolute=0" \
-             $flip -S 20 -F 2 -d "$dev" -r 1280x720 --no-banner "$TEMP_IMAGE"
+    fswebcam --set auto_exposure="$EXPOSURE" \
+             --set exposure_time_absolute="$EXP_TIME" \
+             --set focus_absolute=0 \
+             -S "$SKIP_FRAMES" \
+             $flip -d "$dev" -r 1280x720 --no-banner "$TEMP_IMAGE"
 
     # 2. Overlay timestamp and save to final destination
     convert "$TEMP_IMAGE" \
