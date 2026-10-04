@@ -47,7 +47,7 @@ elif [ "$HOSTNAME" = "library" ]; then
     FLIP_ARG2=""
 elif [ "$HOSTNAME" = "aaliyah" ]; then
     FLIP_ARG1=""
-    FLIP_ARG2="--flip v,h"
+    FLIP_ARG2=""
 fi
 
 
@@ -112,7 +112,7 @@ for cam in "${cameras[@]}"; do
     # 1. Take snapshot
     fswebcam --set "auto_exposure=1" \
              --set "exposure_time_absolute=50" \
-	     --set "focus_automatic_continuous=0" \
+#	     --set "focus_automatic_continuous=0" \
              --set "focus_absolute=0" \
              $flip -S 20 -F 2 -d "$dev" -r 1280x720 --no-banner "$TEMP_IMAGE"
 
