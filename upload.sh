@@ -110,9 +110,9 @@ for cam in "${cameras[@]}"; do
     TEMP_IMAGE="/tmp/$IMAGE_NAME"
  
     # 1. Take snapshot
+#	     --set "focus_automatic_continuous=0" \
     fswebcam --set "auto_exposure=1" \
              --set "exposure_time_absolute=50" \
-#	     --set "focus_automatic_continuous=0" \
              --set "focus_absolute=0" \
              $flip -S 20 -F 2 -d "$dev" -r 1280x720 --no-banner "$TEMP_IMAGE"
 
