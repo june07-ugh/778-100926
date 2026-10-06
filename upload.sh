@@ -204,5 +204,5 @@ git push origin "$BRANCH"
 
 # cleanup
 du -sh "$REPO_DIR"
-find "$REPO_DIR" -type f -name "*.jpg" -mmin +1440 -delete
+find "$REPO_DIR" -type f -name "*.jpg" -mmin +180 -delete
 du -sh "$REPO_DIR"
