@@ -56,8 +56,8 @@ fi
 
 
 git config --global init.defaultBranch $BRANCH
-git config --global user.name "667@onezerohosting.com"
-git config --global user.email "667@onezerohosting.com"
+git config --global user.name "adrian@${HOSTNAME}"
+git config --global user.email "778@onezerohosting.com"
 
 # 2. Clone the repo if it doesn't exist locally yet (run this setup once beforehand)
 if [ ! -d "$REPO_DIR/.git" ]; then
