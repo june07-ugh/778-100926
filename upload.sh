@@ -195,11 +195,25 @@ elif [ "$HOSTNAME" == "library" ]; then
 elif [ "$HOSTNAME" == "aaliyah" ]; then
 	cp $IMAGE1 "${REPO_DIR}/snapshot-5.jpg"
 	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
-    cp ~/ha-storage/storefront-corner.jpg $IMAGE3 && cp ~/ha-storage/storefront-corner.jpg "${REPO_DIR}/snapshot-7.jpg"
-    cp ~/ha-storage/storefront-edge.jpg $IMAGE4 && cp ~/ha-storage/storefront-edge.jpg "${REPO_DIR}/snapshot-8.jpg"
-    cp ~/ha-storage/storefront-front.jpg $IMAGE5 && cp ~/ha-storage/storefront-front.jpg "${REPO_DIR}/snapshot-9.jpg"
-    cp ~/ha-storage/storefront-tower.jpg $IMAGE6 && cp ~/ha-storage/storefront-tower.jpg "${REPO_DIR}/snapshot-10.jpg"
-    cp ~/ha-storage/storefront-kitchen.jpg $IMAGE7 && cp ~/ha-storage/storefront-kitchen.jpg "${REPO_DIR}/snapshot-11.jpg"
+
+    extra_cam_images=(
+	    "storefront-corner.jpg|$IMAGE3|snapshot-7"
+	    "storefront-edge.jpg|$IMAGE3|snapshot-8"
+	    "storefront-front.jpg|$IMAGE3|snapshot-9"
+	    "storefront-tower.jpg|$IMAGE3|snapshot-10"
+	    "storefront-kitchen.jpg|$IMAGE3|snapshot-11"
+    )
+
+    for extra in "${extra_cam_images[@]}"; do
+	    IFS='|' read -r image_name image_var snapshot_name <<< "$extra"
+	    cp "~/ha-storage/${image_name}" $image_var && cp "~/ha-storage/${image_name}" "${REPO_DIR}/${snapshot_name}"
+    done
+
+#    cp ~/ha-storage/storefront-corner.jpg $IMAGE3 && cp ~/ha-storage/storefront-corner.jpg "${REPO_DIR}/snapshot-7.jpg"
+#    cp ~/ha-storage/storefront-edge.jpg $IMAGE4 && cp ~/ha-storage/storefront-edge.jpg "${REPO_DIR}/snapshot-8.jpg"
+#    cp ~/ha-storage/storefront-front.jpg $IMAGE5 && cp ~/ha-storage/storefront-front.jpg "${REPO_DIR}/snapshot-9.jpg"
+#    cp ~/ha-storage/storefront-tower.jpg $IMAGE6 && cp ~/ha-storage/storefront-tower.jpg "${REPO_DIR}/snapshot-10.jpg"
+#    cp ~/ha-storage/storefront-kitchen.jpg $IMAGE7 && cp ~/ha-storage/storefront-kitchen.jpg "${REPO_DIR}/snapshot-11.jpg"
 fi
 
 arr=($SPARSE_FILE_LIST); SPARSE_FILE_LIST="${arr[@]#/}"
