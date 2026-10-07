@@ -197,16 +197,29 @@ elif [ "$HOSTNAME" == "aaliyah" ]; then
 	cp $IMAGE2 "${REPO_DIR}/snapshot-6.jpg"
 
     extra_cam_images=(
-	    "storefront-corner.jpg|$IMAGE3|snapshot-7"
-	    "storefront-edge.jpg|$IMAGE4|snapshot-8"
-	    "storefront-front.jpg|$IMAGE5|snapshot-9"
-	    "storefront-tower.jpg|$IMAGE6|snapshot-10"
-	    "storefront-kitchen.jpg|$IMAGE7|snapshot-11"
+	    "storefront-corner.jpg|$IMAGE3|snapshot-7.jpg"
+	    "storefront-edge.jpg|$IMAGE4|snapshot-8.jpg"
+	    "storefront-front.jpg|$IMAGE5|snapshot-9.jpg"
+	    "storefront-tower.jpg|$IMAGE6|snapshot-10.jpg"
+	    "storefront-kitchen.jpg|$IMAGE7|snapshot-11.jpg"
     )
 
     for extra in "${extra_cam_images[@]}"; do
-	    IFS='|' read -r image_name image_var snapshot_name <<< "$extra"
-	    cp ~/ha-storage/${image_name} $image_var && cp ~/ha-storage/${image_name} "${REPO_DIR}/${snapshot_name}"
+	IFS='|' read -r image_name image_var snapshot_name <<< "$extra"
+	    
+	cp ~/ha-storage/${image_name} $TEMP_IMAGE
+	# 2. Overlay timestamp and save to final destination
+	convert "$TEMP_IMAGE" \
+		-gravity SouthEast \
+		-background 'rgba(0, 0, 0, 0.5)' \
+		-fill white \
+		-font Helvetica \
+		-pointsize 18 \
+		-splice 0x28 \
+		-annotate +10+5 " $DATETIMESTAMP " \
+		"$img_var"
+	cp $image_var "${REPO_DIR}/${snapshot_name}"
+	    #cp ~/ha-storage/${image_name} $image_var && cp ~/ha-storage/${image_name} "${REPO_DIR}/${snapshot_name}"
     done
 
 #    cp ~/ha-storage/storefront-corner.jpg $IMAGE3 && cp ~/ha-storage/storefront-corner.jpg "${REPO_DIR}/snapshot-7.jpg"
