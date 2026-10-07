@@ -199,7 +199,7 @@ elif [ "$HOSTNAME" == "aaliyah" ]; then
     cp ~/ha-storage/storefront-edge.jpg $IMAGE4 && cp ~/ha-storage/storefront-edge.jpg "${REPO_DIR}/snapshot-8.jpg"
     cp ~/ha-storage/storefront-front.jpg $IMAGE5 && cp ~/ha-storage/storefront-front.jpg "${REPO_DIR}/snapshot-9.jpg"
     cp ~/ha-storage/storefront-tower.jpg $IMAGE6 && cp ~/ha-storage/storefront-tower.jpg "${REPO_DIR}/snapshot-10.jpg"
-    cp ~/ha-storage/storefront-kitchen.jpg $IMAGE6 && cp ~/ha-storage/storefront-kitchen.jpg "${REPO_DIR}/snapshot-11.jpg"
+    cp ~/ha-storage/storefront-kitchen.jpg $IMAGE7 && cp ~/ha-storage/storefront-kitchen.jpg "${REPO_DIR}/snapshot-11.jpg"
 fi
 
 arr=($SPARSE_FILE_LIST); SPARSE_FILE_LIST="${arr[@]#/}"
