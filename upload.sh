@@ -70,10 +70,10 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 	else
 		# 2. Enable sparse checkout and target ONLY the snapshot file
 		git clone --filter=blob:none --depth 1 --branch main git@github.com:june07/778.git $REPO_DIR
-		git sparse-checkout init
+		git sparse-checkout init --cone
 	fi
 
-	git sparse-checkout set --no-cone true
+#	git sparse-checkout set --no-cone true
 
 	if [ "$HOSTNAME" == "art" ]; then
 		git sparse-checkout set /upload.sh /snapshot-1.jpg /snapshot-2.jpg ${IMAGE1#${REPO_DIR}/} ${IMAGE2#${REPO_DIR}/}
