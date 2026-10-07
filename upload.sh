@@ -69,7 +69,7 @@ if [ ! -d "$REPO_DIR/.git" ]; then
 
 	else
 		# 2. Enable sparse checkout and target ONLY the snapshot file
-		git clone --filter=blob:none --depth 1 --branch main git@github.com:june07/778.git $REPO_DIR
+		git clone --filter=blob:none --depth 1 --no-checkout --branch main git@github.com:june07/778.git $REPO_DIR
 		git sparse-checkout init --cone
 	fi
 
