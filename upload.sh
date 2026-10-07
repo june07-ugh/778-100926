@@ -217,7 +217,7 @@ elif [ "$HOSTNAME" == "aaliyah" ]; then
 		-pointsize 18 \
 		-splice 0x28 \
 		-annotate +10+5 " $DATETIMESTAMP " \
-		"$img_var"
+		"$image_var"
 	cp $image_var "${REPO_DIR}/${snapshot_name}"
 	    #cp ~/ha-storage/${image_name} $image_var && cp ~/ha-storage/${image_name} "${REPO_DIR}/${snapshot_name}"
     done
