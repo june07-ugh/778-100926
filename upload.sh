@@ -34,6 +34,7 @@ IMAGE_DEST_PREFIX="$REPO_DIR_DAY/snapshot"
 BRANCH="main" # Change to 'master' if your default branch is master
 TIMESTAMP=`date +%s`
 DATETIMESTAMP=$(TZ="America/Chicago" date +"%Y-%m-%d %H:%M:%S")
+CACHE_FILE="/tmp/camera_devices.cache"
 IMAGE1="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-1.jpg"
 IMAGE2="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-2.jpg"
 IMAGE3="${IMAGE_DEST_PREFIX}-${HOSTNAME}-${TIMESTAMP}-3.jpg"
@@ -55,6 +56,42 @@ elif [ "$HOSTNAME" = "aaliyah" ]; then
     FLIP_ARG2=""
 fi
 
+
+# If the cache already exists, skip scanning and use it
+if [ -f "$CACHE_FILE" ]; then
+    echo "Cache found. Using existing device map:"
+    cat "$CACHE_FILE"
+else
+    echo "Cache not found. Scanning USB bus for cameras..."
+    rm -f "$CACHE_FILE"
+
+    # Iterate through all USB devices in sysfs
+    for d in /sys/bus/usb/devices/*; do
+        # Ensure it's a valid USB device node containing vendor/product IDs
+        [ -f "$d/idVendor" ] && [ -f "$d/idProduct" ] || continue
+        
+        vid=$(cat "$d/idVendor" 2>/dev/null)
+        pid=$(cat "$d/idProduct" 2>/dev/null)
+        vid_pid="${vid}:${pid}"
+        
+        # Get product string from sysfs
+        prod_name=$(cat "$d/product" 2>/dev/null)
+        [ -z "$prod_name" ] && prod_name="Unknown Camera"
+        
+        # Search for video4linux nodes nested under this device's interfaces (e.g., 1-1.2:1.0/video4linux/video0)
+        for vnode in "$d"/*/video4linux/video* "$d"/video4linux/video*; do
+            [ -e "$vnode" ] || continue
+            v_base=$(basename "$vnode")
+            dev_path="/dev/$v_base"
+            
+            # Write out in format: /dev/video0|Product Name|vid:pid|sysfs_path
+            echo "$dev_path|$prod_name|$vid_pid|$d" >> "$CACHE_FILE"
+        done
+    done
+
+    echo "Scan complete. Saved to $CACHE_FILE:"
+    cat "$CACHE_FILE"
+fi
 
 git config --global init.defaultBranch $BRANCH
 git config --global user.name "adrian@${HOSTNAME}"
