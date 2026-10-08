@@ -188,18 +188,60 @@ cameras=(
     "/dev/video2|$FLIP_ARG2|$IMAGE2"
 )
 
+capture_image() {
+    local dev="$1"
+    local flip="$2"
+    local TEMP_IMAGE="$3"
+    local CACHE_FILE="/tmp/camera_devices.cache"
+
+    # Run the capture command
+    fswebcam --set auto_exposure="$EXPOSURE" \
+             --set exposure_time_absolute="$EXP_TIME" \
+             --set focus_absolute=0 \
+             -S "$SKIP_FRAMES" \
+             $flip -d "$dev" -r 1280x720 --no-banner "$TEMP_IMAGE"
+
+    # Check if capture failed (non-zero exit code or missing output image)
+    if [ $? -ne 0 ] || [ ! -f "$TEMP_IMAGE" ]; then
+        echo "$(date): Capture failed on $dev. Attempting hardware recovery..."
+        
+        if [ -f "$CACHE_FILE" ]; then
+            # Look up the specific sysfs path for this exact video device node from the cache
+            sys_path=$(awk -F'|' -v target="$dev" '$1 == target {print $4}' "$CACHE_FILE")
+            
+            if [ -n "$sys_path" ] && [ -d "$sys_path" ]; then
+                echo "$(date): Resetting USB port at $sys_path..."
+                
+                # Cut power to the port[cite: 1]
+                echo 0 > "$sys_path/authorized" 2>/dev/null
+                sleep 2
+                
+                # Restore power to force re-enumeration[cite: 1]
+                echo 1 > "$sys_path/authorized" 2>/dev/null
+                sleep 4 # Give the camera time to reinitialize
+                
+                if [ -f "$CACHE_FILE" ]; then
+                    #retry capture
+                    capture_image "$dev" "$flip" "$TEMP_IMAGE"
+                fi
+                # Remove cache so it rebuilds fresh paths/nodes on next check
+                rm -f "$CACHE_FILE"
+            else
+                echo "$(date): Error: Could not find matching sysfs path for $dev in cache."
+            fi
+        else
+            echo "$(date): Error: Cache file $CACHE_FILE does not exist."
+        fi
+    fi
+}
+
 # 1. Overlay timestamp and save as the "live" pointer
 for cam in "${cameras[@]}"; do
     IFS='|' read -r dev flip img <<< "$cam"
     IMAGE_NAME=$(basename $img)
     TEMP_IMAGE="/tmp/$IMAGE_NAME"
  
-    # 1. Take snapshot
-    fswebcam --set auto_exposure="$EXPOSURE" \
-             --set exposure_time_absolute="$EXP_TIME" \
-             --set focus_absolute=0 \
-             -S "$SKIP_FRAMES" \
-             $flip -d "$dev" -r 1280x720 --no-banner "$TEMP_IMAGE"
+    capture_image "$dev" "$flip" "$TEMP_IMAGE"
 
     # 2. Overlay timestamp and save to final destination
     convert "$TEMP_IMAGE" \
